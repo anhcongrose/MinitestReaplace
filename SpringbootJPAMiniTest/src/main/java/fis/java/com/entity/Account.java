@@ -3,6 +3,7 @@ package fis.java.com.entity;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -15,9 +16,15 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "Account", catalog = "testminitest")
 
@@ -25,19 +32,19 @@ public class Account implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@Column(name = "id")
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
 	private Long id;
 
-	@Column(name = "accountNumber")
+	@Column(name = "accountNumber", nullable = false)
 	private String accountNumber;
 
-	@Column(name = "accountName")
+	@Column(name = "accountName", nullable = false, length = 15)
 	private String accountName;
 
-	@Column(name = "blance")
-	private Double blance;
+	@Column(name = "balance")
+	private Double balance;
 
 	@Column(name = "status")
 	private int status;
@@ -49,12 +56,11 @@ public class Account implements Serializable {
 		super();
 	}
 
-	public Account(Long id, String accountNumber, String accountName, Double blance, int status) {
+	public Account(String accountNumber, String accountName, Double blance, int status) {
 		super();
-		this.id = id;
 		this.accountNumber = accountNumber;
 		this.accountName = accountName;
-		this.blance = blance;
+		this.balance = blance;
 		this.status = status;
 	}
 
@@ -83,11 +89,11 @@ public class Account implements Serializable {
 	}
 
 	public Double getBlance() {
-		return blance;
+		return balance;
 	}
 
 	public void setBlance(Double blance) {
-		this.blance = blance;
+		this.balance = blance;
 	}
 
 	public int getStatus() {
@@ -105,6 +111,19 @@ public class Account implements Serializable {
 	public void setListTransaction(List<Transaction> listTransaction) {
 		ListTransaction = listTransaction;
 	}
-	
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
+		Account account = (Account) o;
+		return Objects.equals(id, account.id)
+				&& Objects.equals(accountNumber, account.accountNumber)
+				&& Objects.equals(accountName, account.accountName)
+				&& Objects.equals(balance, account.balance)
+				&& Objects.equals(status, account.status);
+	}
 
 }

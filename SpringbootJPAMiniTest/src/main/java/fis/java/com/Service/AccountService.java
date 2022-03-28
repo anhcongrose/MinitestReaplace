@@ -1,7 +1,10 @@
 package fis.java.com.Service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import fis.java.com.Repository.IAccountRepo;
 import fis.java.com.entity.Account;
 
@@ -9,29 +12,55 @@ import fis.java.com.entity.Account;
 public class AccountService implements IAccountService {
 
 	@Autowired
-	private IAccountRepo Iripository;
+	private IAccountRepo accRepository;
 
 	@Override
-	public Account update(Account account) {		
-		return Iripository.save(account);
+	public boolean existsAccountByAccountNumber(String accountNumber) {
+
+		return accRepository.existsByAccountNumber(accountNumber);
+	}
+
+	@Override
+	public List<Account> getAllAccounts() {
+
+		return accRepository.findAll();
+	}
+
+	@Override
+	public Account update(Account account) {
+		return accRepository.save(account);
 	}
 
 	@Override
 	public void deleteById(Long id) {
 
-		Iripository.deleteById(id);
+		accRepository.deleteById(id);
 	}
 
 	@Override
 	public Account getAccountByID(Long id) {
 
-		return Iripository.findById(id).get();
+		return accRepository.findById(id).get();
 	}
 
+//
+//	@Override
+//	public void createAccount(Account account) {
+//
+//		accRepository.save(account);
+//
+//	}
+	@SuppressWarnings("unlikely-arg-type")
 	@Override
 	public void createAccount(Account account) {
+		String masage = "số tài khoản đã tồn tại";
+		Account account1 = new Account();
+		if (!account.getAccountNumber().equals(accRepository.existsByAccountNumber(account1.getAccountName()))) {
+			System.out.println(masage);
+		} else {
+			accRepository.save(account);
+		}
 
-		Iripository.save(account);
 	}
 
 }

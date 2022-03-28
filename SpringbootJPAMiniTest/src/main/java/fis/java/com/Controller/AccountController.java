@@ -22,6 +22,11 @@ public class AccountController {
 	@Autowired
 	IAccountService service;
 
+	@GetMapping()
+	public ResponseEntity<?> getAllAccounts() {
+		return new ResponseEntity<>(service.getAllAccounts(), HttpStatus.OK);
+	}
+
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<?> getAccountByID(@PathVariable(name = "id") Long id) {
 		return new ResponseEntity<Account>(service.getAccountByID(id), HttpStatus.OK);
@@ -32,6 +37,12 @@ public class AccountController {
 		service.createAccount(account);
 		return new ResponseEntity<String>("Create successfully!", HttpStatus.OK);
 	}
+
+//	@PostMapping()
+//	public ResponseEntity<?> createAccounts(@RequestBody AccountDTO form) throws Exception {
+//		service.createAccount(form);
+//		return new ResponseEntity<String>("Create successfully!", HttpStatus.OK);
+//	}
 
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<?> updateAccount(@PathVariable(name = "id") Long id, @RequestBody Account account) {

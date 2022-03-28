@@ -1,7 +1,7 @@
 package fis.java.com.entity;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -50,10 +50,9 @@ public class Transaction implements Serializable {
 		super();
 	}
 
-	public Transaction(Long id, Date transactionDate, Long fromAccount, Long toAccount, Double amount, int status,
+	public Transaction( Date transactionDate, Long fromAccount, Long toAccount, Double amount, int status,
 			String content, String errorReason) {
 		super();
-		this.id = id;
 		this.transactionDate = transactionDate;
 		this.fromAccount = fromAccount;
 		this.toAccount = toAccount;
