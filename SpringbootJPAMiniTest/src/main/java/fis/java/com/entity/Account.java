@@ -1,7 +1,6 @@
 package fis.java.com.entity;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -17,14 +16,12 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
+
 @AllArgsConstructor
-@NoArgsConstructor
+
 @Entity
 @Table(name = "Account", catalog = "testminitest")
 
@@ -37,7 +34,7 @@ public class Account implements Serializable {
 	@Column(name = "id")
 	private Long id;
 
-	@Column(name = "accountNumber", nullable = false)
+	@Column(name = "accountNumber", nullable = false, unique = false)
 	private String accountNumber;
 
 	@Column(name = "accountName", nullable = false, length = 15)
@@ -50,7 +47,7 @@ public class Account implements Serializable {
 	private int status;
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "accountNumber", referencedColumnName = "id")
-	List<Transaction> ListTransaction = new ArrayList<>();
+	List<Transaction> ListTransaction;
 
 	public Account() {
 		super();
@@ -119,10 +116,8 @@ public class Account implements Serializable {
 		if (o == null || getClass() != o.getClass())
 			return false;
 		Account account = (Account) o;
-		return Objects.equals(id, account.id)
-				&& Objects.equals(accountNumber, account.accountNumber)
-				&& Objects.equals(accountName, account.accountName)
-				&& Objects.equals(balance, account.balance)
+		return Objects.equals(id, account.id) && Objects.equals(accountNumber, account.accountNumber)
+				&& Objects.equals(accountName, account.accountName) && Objects.equals(balance, account.balance)
 				&& Objects.equals(status, account.status);
 	}
 

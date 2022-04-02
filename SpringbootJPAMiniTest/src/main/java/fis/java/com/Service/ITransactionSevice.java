@@ -7,6 +7,6 @@ public interface ITransactionSevice {
 
 	void deleteTransactionById(Long id);
 
-	Transaction bankMoney(TransactionDTO formtransaction);
+	Transaction CreatebankMoney(TransactionDTO formtransaction);
 
 }

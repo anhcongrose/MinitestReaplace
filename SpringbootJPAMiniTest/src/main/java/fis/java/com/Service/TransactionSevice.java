@@ -31,38 +31,59 @@ public class TransactionSevice implements ITransactionSevice {
 	}
 
 	@Override
-	public  Transaction bankMoney(TransactionDTO formtransaction) {
+	public Transaction CreatebankMoney(TransactionDTO formtransaction) {
 		List<Account> listaccount = new ArrayList<>();
 		Account fromaccount = new Account();
 		Account toaccount = new Account();
 		listaccount.add(toaccount);
-		listaccount.add(fromaccount);		
+		listaccount.add(fromaccount);
 		String errorReason = "";
-		int status=1;
-	
+		int status = 1;
+
 		for (Account account : listaccount) {
-			if (accRepository.existsByAccountNumber(account.getAccountNumber()) == false || account.getStatus() != 1
-					|| account.getBlance() <= formtransaction.getAmount()) {
+			try {
 
-				errorReason = "Lỗi giao dịch! tài khoản sai hoặc số dư k đủ ! vui lòng kiểm tra lại!";
+				if (accRepository.existsByAccountNumber(account.getAccountNumber()) == false || account.getStatus() != 1
+						|| account.getBlance() <= formtransaction.getAmount()) {
 
-			}else {
-			Date date= new Date();
-			Transaction transaction= new Transaction(date, fromaccount, toaccount, formtransaction.getAmount(), status,formtransaction.getContent(), errorReason);								
-			if(status==1) {
-				fromaccount.setBlance(fromaccount.getBlance()-formtransaction.getAmount());
-				toaccount.setBlance(toaccount.getBlance()+formtransaction.getAmount());
-				accRepository.save(fromaccount);
-				accRepository.save(toaccount);
-				transactionRepo.save(transaction);			
-		}else {
-			transactionRepo.save(transaction);
-		}		
-			return transaction;
-	}
+					errorReason = "Lỗi giao dịch! tài khoản sai hoặc số dư k đủ ! vui lòng kiểm tra lại!";
+
+				} else {
+
+					if (status == 1) {
+						fromaccount.setBlance(fromaccount.getBlance() - formtransaction.getAmount());
+						toaccount.setBlance(toaccount.getBlance() + formtransaction.getAmount());
+						accRepository.save(fromaccount);
+						errorReason += "fromaccount ok.";
+						// gia lập 1 exceptoin throw new ex
+						accRepository.save(toaccount);
+						errorReason += "toaccount ok.";
+
+					} else {
+
+					}
+				}
+			} catch (Exception e) {
+				errorReason += e.getMessage();
+				status = 0;
+
+			} finally {
+				Date date = new Date();
+				TransactionDTO transaction = new TransactionDTO(
+						date,
+						fromaccount,
+						toaccount,
+						formtransaction.getAmount(),
+						status,
+						formtransaction.getContent(), 
+						errorReason);
+				transactionRepo.save(transaction);
+			}
 			
-	}
-		
+		}
+
+		return null;
+
 	}
 
 }

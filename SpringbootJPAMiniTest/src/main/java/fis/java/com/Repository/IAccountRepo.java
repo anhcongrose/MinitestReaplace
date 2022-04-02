@@ -13,7 +13,7 @@ import fis.java.com.entity.Account;
 public interface IAccountRepo extends JpaRepository<Account, Long>, JpaSpecificationExecutor<Account> {
 //	Optional<Account> findByAccountNumber(String accountNumber);
 	List<Account> findByAccountNumber(String accountNumber);
-	boolean existsByAccountNumber(String accountNumber);
+	boolean existsByAccountNumber(String accountNumber);	
 	void save(TransactionDTO transaction);
 
 }

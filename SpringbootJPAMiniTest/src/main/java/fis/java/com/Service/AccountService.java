@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import fis.java.com.Repository.IAccountRepo;
+import fis.java.com.dto.ResponseDTO;
 import fis.java.com.entity.Account;
 
 @Service
@@ -52,15 +53,21 @@ public class AccountService implements IAccountService {
 //	}
 	@SuppressWarnings("unlikely-arg-type")
 	@Override
-	public void createAccount(Account account) {
+	public ResponseDTO createAccount(Account account) {
+		ResponseDTO respo = new ResponseDTO();
 		String masage = "số tài khoản đã tồn tại";
 		Account account1 = new Account();
-		if (!account.getAccountNumber().equals(accRepository.existsByAccountNumber(account1.getAccountName()))) {
-			System.out.println(masage);
-		} else {
-			accRepository.save(account);
+		if (account.getAccountNumber().equals(accRepository.existsByAccountNumber(account1.getAccountName()))) {
+			respo.setCode("erro");
+			respo.setMassage(masage);
+			return respo;
 		}
+		Account accoun1 = accRepository.save(account);
+		respo.setCode("sucssec");
+		respo.setMassage("thanh cong");
+		respo.setData(accoun1);
 
+		return respo;
 	}
 
 }

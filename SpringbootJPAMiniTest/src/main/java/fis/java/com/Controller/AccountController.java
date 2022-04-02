@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import fis.java.com.Service.IAccountService;
+import fis.java.com.dto.ResponseDTO;
 import fis.java.com.entity.Account;
 
 @RestController
@@ -34,8 +35,8 @@ public class AccountController {
 
 	@PostMapping()
 	public ResponseEntity<?> createAccount(@RequestBody Account account) {
-		service.createAccount(account);
-		return new ResponseEntity<String>("Create successfully!", HttpStatus.OK);
+
+		return ResponseEntity.ok(service.createAccount(account));
 	}
 
 //	@PostMapping()

@@ -4,17 +4,17 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import fis.java.com.dto.AccountDTO;
+import fis.java.com.dto.ResponseDTO;
 import fis.java.com.entity.Account;
 
 @Component
 public interface IAccountService {
-	
+
 	boolean existsAccountByAccountNumber(String accountNumber);
 
 	List<Account> getAllAccounts();
 
-	void createAccount(Account account);
+	ResponseDTO createAccount(Account account);
 
 	Account update(Account account);
 
